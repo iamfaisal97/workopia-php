@@ -1,3 +1,6 @@
 <?php
 
+
 loadView('home');
+
+
