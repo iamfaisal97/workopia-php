@@ -1,0 +1,17 @@
+{
+    "name": "iamfaisal97/workopia-php",
+    "description": "Job Listing Application built in vanilla PHP",
+    "authors": [
+        {
+            "name": "Faisal Khan",
+            "email": "geekfaisal01@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "Framework/",
+            "App\\": "App/"
+        }
+    }
+}
+
