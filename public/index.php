@@ -1,19 +1,13 @@
 <?php
 
+session_start(); 
+
 require __DIR__ . '/../vendor/autoload.php';
 
 require '../helpers.php';
 
 use Framework\Router;
 
-
-// Autoloader - allows as many classses as you want so you does not need to require them individually
-// spl_autoload_register(function ($class) {
-//     $path = basePath('Framework/' . $class . '.php');
-//     if (file_exists($path)) {
-//         require $path;
-//     }
-// });
 
 
 
