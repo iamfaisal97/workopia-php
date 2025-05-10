@@ -25,10 +25,6 @@ class ErrorController
     }
 
 
-
-
-
-
     /**
      * 403 unauthorized error
      * 

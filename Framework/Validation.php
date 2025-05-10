@@ -47,7 +47,8 @@ class Validation
 
     /** 
      * Match a value against another
-     * @param string $value
+     * @param string $value 1
+     * @param string $value 2
      * @return bool
      */
 
