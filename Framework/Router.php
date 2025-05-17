@@ -3,6 +3,7 @@
 namespace Framework;
 
 use App\controllers\ErrorController;
+use Framework\Middleware\Authorize;
 
 class Router
 {
@@ -12,17 +13,16 @@ class Router
 
     /**
      * Add a new route
-     * 
-     * 
-     * 
+     *
      * @param string $method
      * @param string $uri
      * @param string $action
+     * @param array $middleware
      * @return void 
 
      */
 
-    public function resgisterRoute($method, $uri, $action)
+    public function resgisterRoute($method, $uri, $action, $middleware = [])
     {
 
 
@@ -32,7 +32,8 @@ class Router
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller,
-            'controllerMethod' => $controllerMethod
+            'controllerMethod' => $controllerMethod,
+            'middleware' => $middleware
         ];
     }
 
@@ -40,16 +41,15 @@ class Router
     /**
      * Add a GET route
      * 
-     * 
-     * 
+     * @return void 
      * @param string $uri
      * @param string $controller
-     * @return void 
+     * @param array $middleware
      */
 
-    public function get($uri, $controller)
+    public function get($uri, $controller, $middleware = [])
     {
-        $this->resgisterRoute('GET', $uri, $controller);
+        $this->resgisterRoute('GET', $uri, $controller, $middleware);
     }
 
 
@@ -57,17 +57,16 @@ class Router
 
     /**
      * Add a POST route
-     * 
-     * 
-     * 
      * @param string $uri
+     * @param array $middleware
      * @param string $controller
-     * @return void 
+     * @return void
+     *  
      */
 
-    public function post($uri, $controller)
+    public function post($uri, $controller, $middleware = [])
     {
-        $this->resgisterRoute('POST', $uri, $controller);
+        $this->resgisterRoute('POST', $uri, $controller, $middleware);
     }
 
 
@@ -75,16 +74,15 @@ class Router
     /**
      * Add a PUT route
      * 
-     * 
-     * 
      * @param string $uri
      * @param string $controller
+     * @param array $middleware
      * @return void 
      */
 
-    public function put($uri, $controller)
+    public function put($uri, $controller, $middleware = [])
     {
-        $this->resgisterRoute('PUT', $uri, $controller);
+        $this->resgisterRoute('PUT', $uri, $controller, $middleware);
     }
 
 
@@ -92,21 +90,16 @@ class Router
 
     /**
      * Add a DELETE route
-     * 
-     * 
-     * 
      * @param string $uri
      * @param string $controller
+     * @param array $middleware
      * @return void 
      */
 
-    public function delete($uri, $controller)
+    public function delete($uri, $controller, $middleware = [])
     {
-        $this->resgisterRoute('DELETE', $uri, $controller);
+        $this->resgisterRoute('DELETE', $uri, $controller, $middleware);
     }
-
-
-
 
     /**
      * Route the request
@@ -180,6 +173,9 @@ class Router
                 }
 
                 if ($match) {
+                    foreach ($route['middleware'] as $middleware) {
+                        (new Authorize())->handle($middleware);
+                    }
                     // Extract controller and controller method
                     $controller = 'App\\Controllers\\' . $route['controller'];
                     $controllerMethod = $route['controllerMethod'];
@@ -191,22 +187,6 @@ class Router
                     return;
                 }
             }
-
-
-
-
-            // if ($route['uri'] === $uri && $route['method'] === $method) {
-
-            //     // Extract controller and controller method
-            //     $controller = 'App\\Controllers\\' . $route['controller'];
-            //     $controllerMethod = $route['controllerMethod'];
-
-
-            //     // Instantiate the controller and call the method
-            //     $controllerInstance = new $controller();
-            //     $controllerInstance->$controllerMethod();
-            //     return;
-            // }
         }
 
 
